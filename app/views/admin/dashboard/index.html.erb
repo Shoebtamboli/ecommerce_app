@@ -1,0 +1,23 @@
+<h1 class="text-2xl font-semibold mb-6">Dashboard</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <dt class="text-sm font-medium text-gray-500 truncate">
+        Total Products
+      </dt>
+      <dd class="mt-1 text-3xl font-semibold text-gray-900">
+        <%= @total_products %>
+      </dd>
+    </div>
+  </div>
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <dt class="text-sm font-medium text-gray-500 truncate">
+        Out of Stock Products
+      </dt>
+      <dd class="mt-1 text-3xl font-semibold text-gray-900">
+        <%= @out_of_stock_products %>
+      </dd>
+    </div>
+  </div>
+</div>
