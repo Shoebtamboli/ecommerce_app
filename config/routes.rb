@@ -14,9 +14,11 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    get 'orders/index'
-    get 'orders/edit'
-    get 'orders/update'
+    get 'users/index'
+    get 'users/show'
+    get 'users/edit'
+    get 'users/update'
+    get 'users/destroy'
     get 'dashboard', to: 'dashboard#index'
     resources :products do
       member do
@@ -24,5 +26,6 @@ Rails.application.routes.draw do
       end
     end
     resources :orders, only: [:index, :edit, :update]
+    resources :users
   end
 end
