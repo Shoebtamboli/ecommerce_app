@@ -1,0 +1,52 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Contact Us</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h2 class="text-2xl font-semibold mb-4">Get in Touch</h2>
+      <%= form_with(model: @contact_submission, url: contact_path, local: true, class: "space-y-4") do |f| %>
+        <% if @contact_submission.errors.any? %>
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Please correct the following errors:</strong>
+            <ul>
+              <% @contact_submission.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div>
+          <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :name, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.email_field :email, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+        <div>
+          <%= f.label :message, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_area :message, rows: 4, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+        <div>
+          <%= f.submit "Send Message", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h2 class="text-2xl font-semibold mb-4">Contact Information</h2>
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Email</h3>
+        <p><a href="mailto:support@example.com" class="text-blue-500 hover:text-blue-700">support@example.com</a></p>
+      </div>
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Phone</h3>
+        <p>(123) 456-7890</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-2">Address</h3>
+        <p>123 E-commerce Street</p>
+        <p>City, State 12345</p>
+        <p>Country</p>
+      </div>
+    </div>
+  </div>
+</div>

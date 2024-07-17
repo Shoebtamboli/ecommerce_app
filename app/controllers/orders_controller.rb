@@ -1,6 +1,11 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_order, only: [:show]
   before_action :check_cart, only: [:new, :create]
+
+  def index
+    @orders = current_user.orders.order(created_at: :desc)
+  end
 
   def new
     @cart = current_user.cart
@@ -35,6 +40,10 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def set_order
+    @order = current_user.orders.find(params[:id])
+  end
 
   def check_cart
     unless current_user.cart && current_user.cart.cart_items.any?
