@@ -3,9 +3,9 @@ require 'faker'
 
 # Clear existing data
 puts "Clearing existing data..."
+User.destroy_all
 Product.destroy_all
-
-puts "Creating 50 products..."
+Order.destroy_all
 
 def attach_image(product, url, is_thumbnail = false)
   max_attempts = 3
@@ -30,6 +30,27 @@ def attach_image(product, url, is_thumbnail = false)
   end
 end
 
+# Create admin user
+admin = User.create!(
+  email: 'admin@example.com',
+  password: 'password',
+  password_confirmation: 'password',
+  role: :admin
+)
+puts "Created admin user: #{admin.email}"
+
+# Create regular users
+10.times do |i|
+  user = User.create!(
+    email: Faker::Internet.email,
+    password: 'password',
+    password_confirmation: 'password'
+  )
+  puts "Created user #{i+1}: #{user.email}"
+end
+
+# Create products
+puts "Creating 50 products..."
 50.times do |i|
   Product.transaction do
     product = Product.new(
@@ -54,6 +75,25 @@ end
       puts "Created product #{i+1}: #{product.name}"
     else
       puts "Failed to create product #{i+1}: #{product.errors.full_messages.join(', ')}"
+    end
+  end
+end
+
+# Create orders
+puts "Creating orders..."
+User.where(role: :user).each do |user|
+  rand(1..5).times do |i|
+    order = Order.new(user: user, status: Order.statuses.keys.sample)
+    rand(1..5).times do
+      product = Product.all.sample
+      quantity = rand(1..3)
+      order.order_items.build(product: product, quantity: quantity, price: product.price)
+    end
+    order.total = order.order_items.sum { |item| item.quantity * item.price }
+    if order.save
+      puts "Created order #{i+1} for user: #{user.email}"
+    else
+      puts "Failed to create order for user: #{user.email}"
     end
   end
 end
