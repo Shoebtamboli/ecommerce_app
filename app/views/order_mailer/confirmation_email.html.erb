@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Thank you for your order, <%= @user.email %>!</h1>
+    <p>
+      Your order (Order #<%= @order.id %>) has been received and is being processed.
+    </p>
+    <h2>Order Details:</h2>
+    <ul>
+      <% @order.order_items.each do |item| %>
+        <li><%= item.quantity %> x <%= item.product.name %> - $<%= sprintf('%.2f', item.price * item.quantity) %></li>
+      <% end %>
+    </ul>
+    <p>
+      <strong>Total: $<%= sprintf('%.2f', @order.total) %></strong>
+    </p>
+    <p>
+      We'll notify you when your order has shipped.
+    </p>
+    <p>Thank you for shopping with us!</p>
+  </body>
+</html>

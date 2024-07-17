@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Order Status Update for Order #<%= @order.id %></h1>
+    <p>
+      Dear <%= @user.email %>,
+    </p>
+    <p>
+      The status of your order (Order #<%= @order.id %>) has been updated.
+    </p>
+    <p>
+      Previous status: <%= @old_status.capitalize %>
+    </p>
+    <p>
+      New status: <%= @order.status.capitalize %>
+    </p>
+    <h2>Order Details:</h2>
+    <ul>
+      <% @order.order_items.each do |item| %>
+        <li><%= item.quantity %> x <%= item.product.name %> - $<%= sprintf('%.2f', item.price * item.quantity) %></li>
+      <% end %>
+    </ul>
+    <p>
+      <strong>Total: $<%= sprintf('%.2f', @order.total) %></strong>
+    </p>
+    <p>
+      If you have any questions about your order, please don't hesitate to contact us.
+    </p>
+    <p>Thank you for shopping with us!</p>
+  </body>
+</html>

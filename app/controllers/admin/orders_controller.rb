@@ -31,8 +31,13 @@ class Admin::OrdersController < ApplicationController
   end
 
   def update
+    old_status = @order.status
     if @order.update(order_params)
-      redirect_to admin_orders_path, notice: 'Order was successfully updated.'
+      if @order.status != old_status
+        # Send email about status update
+        SendOrderStatusUpdateEmailJob.perform_later(@order.id, old_status)
+      end
+      redirect_to admin_order_path(@order), notice: 'Order was successfully updated.'
     else
       render :edit
     end

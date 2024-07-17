@@ -1,12 +1,10 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
-  get 'pages/home'
-  
   root 'pages#home'
-  
   devise_for :users
   resources :products, only: [:index, :show]
   resources :orders, only: [:new, :create, :show]
-
   resource :cart, only: [:show] do
     post 'add_item/:product_id', to: 'carts#add_item', as: :add_item
     delete 'remove_item/:id', to: 'carts#remove_item', as: :remove_item
@@ -22,5 +20,9 @@ Rails.application.routes.draw do
     end
     resources :orders, only: [:index, :show, :edit, :update]
     resources :users
+  end
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
   end
 end

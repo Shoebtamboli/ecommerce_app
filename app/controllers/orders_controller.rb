@@ -22,6 +22,8 @@ class OrdersController < ApplicationController
 
       @order.update(total: @order.total_price)
       @cart.destroy
+      # Enqueue the job to send the confirmation email
+      SendOrderConfirmationEmailJob.perform_later(@order.id)
       redirect_to @order, notice: 'Order was successfully created.'
     else
       render :new
