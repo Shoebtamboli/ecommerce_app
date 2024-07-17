@@ -1,20 +1,25 @@
-<h1 class="text-2xl font-semibold mb-6">Products</h1>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  <% @products.each do |product| %>
-    <div class="border p-4 rounded-lg shadow">
-      <% if product.thumbnail.attached? %>
-        <%= image_tag product.thumbnail, class: "w-full h-48 object-cover mb-4" %>
-      <% else %>
-        <div class="w-full h-48 bg-gray-200 flex items-center justify-center mb-4">No Image</div>
-      <% end %>
-      <h2 class="text-xl font-semibold"><%= product.name %></h2>
-      <p class="text-gray-600"><%= truncate(product.description, length: 100) %></p>
-      <p class="text-lg font-bold mt-2">$<%= sprintf('%.2f', product.price) %></p>
-      <p class="text-sm text-gray-500">Stock: <%= product.stock %></p>
-      <div class="mt-4 flex justify-between items-center">
-        <%= link_to "View Details", product_path(product), class: "text-blue-500 hover:text-blue-700" %>
-        <%= button_to "Add to Cart", add_item_cart_path(product_id: product.id), method: :post, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-semibold mb-6">Products</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @products.each do |product| %>
+      <div class="border p-4 rounded-lg shadow">
+        <% if product.thumbnail.attached? %>
+          <%= image_tag product.thumbnail, class: "w-full h-48 object-cover mb-4" %>
+        <% else %>
+          <div class="w-full h-48 bg-gray-200 flex items-center justify-center mb-4">No Image</div>
+        <% end %>
+        <h2 class="text-xl font-semibold"><%= product.name %></h2>
+        <p class="text-gray-600"><%= truncate(product.description, length: 100) %></p>
+        <p class="text-lg font-bold mt-2">$<%= sprintf('%.2f', product.price) %></p>
+        <p class="text-sm text-gray-500">Stock: <%= product.stock %></p>
+        <div class="mt-4 flex justify-between items-center">
+          <%= link_to "View Details", product_path(product), class: "text-blue-500 hover:text-blue-700" %>
+          <%= button_to "Add to Cart", add_item_cart_path(product_id: product.id), method: :post, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+  <div class="mt-8">
+    <%= paginate @products %>
+  </div>
 </div>

@@ -5,7 +5,7 @@ class Admin::ProductsController < ApplicationController
   layout 'admin'
 
   def index
-    @products = Product.all
+    @products = Product.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def new
@@ -60,6 +60,6 @@ class Admin::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price, :stock, :thumbnail, images: [])
+    params.require(:product).permit(:name, :description, :price, :stock, :thumbnail, images: [], images_to_remove: [])
   end
 end

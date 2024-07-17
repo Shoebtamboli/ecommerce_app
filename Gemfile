@@ -27,6 +27,7 @@ gem 'open-uri'
 gem 'devise'
 gem 'pundit'
 gem 'faker'
+gem 'kaminari'
 
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
