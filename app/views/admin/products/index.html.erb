@@ -2,13 +2,13 @@
   <h1 class="text-2xl font-semibold mb-6">Products</h1>
   <%= link_to "Add New Product", new_admin_product_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block" %>
   <div class="overflow-x-auto">
-    <table class="min-w-full bg-white">
-      <thead class="bg-gray-100">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
         <tr>
-          <th class="py-2 px-4 border-b">Name</th>
-          <th class="py-2 px-4 border-b">Price</th>
-          <th class="py-2 px-4 border-b">Stock</th>
-          <th class="py-2 px-4 border-b">Actions</th>
+          <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Name</th>
+          <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Price</th>
+          <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Stock</th>
+          <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Actions</th>
         </tr>
       </thead>
       <tbody>

@@ -1,0 +1,54 @@
+<!-- Hero Section -->
+<section class="relative bg-gray-900 text-white">
+  <!-- Background image -->
+  <div class="absolute inset-0 overflow-hidden">
+    <%= image_tag "hero-background.jpg", class: "w-full h-full object-cover object-center", alt: "Background image of products" %>
+    <div class="absolute inset-0 bg-black opacity-60"></div>
+  </div>
+  <!-- Content -->
+  <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+    <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+      Discover Amazing Products
+    </h1>
+    <p class="mt-6 max-w-3xl text-xl">
+      Explore our wide range of high-quality products. From electronics to fashion, we've got everything you need.
+    </p>
+    <div class="mt-10">
+      <%= link_to "Shop Now", products_path, class: "inline-block bg-white text-black font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-100 transition duration-300" %>
+    </div>
+  </div>
+  <!-- Featured categories -->
+  <div class="relative max-w-7xl mx-auto pb-16 px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <% ["Electronics", "Fashion", "Home & Garden", "Sports"].each do |category| %>
+        <%= link_to "#", class: "group" do %>
+          <div class="bg-white bg-opacity-10 p-4 rounded-lg text-center hover:bg-opacity-20 transition duration-300">
+            <span class="text-lg font-semibold"><%= category %></span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</section>
+<!-- Featured Products Section -->
+<section class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+  <h2 class="text-3xl font-extrabold tracking-tight text-gray-900" >Featured Products</h2>
+  <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+    <% @featured_products.each do |product| %>
+      <div class="group relative">
+        <div class="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+          <%= image_tag product.thumbnail, class: "w-full h-full object-center object-cover lg:w-full lg:h-full" if product.thumbnail.attached? %>
+        </div>
+        <div class="mt-4 flex justify-between">
+          <div>
+            <h3 class="text-sm text-gray-700">
+              <%= link_to product.name, product_path(product) %>
+            </h3>
+            <p class="mt-1 text-sm text-gray-500"><%= truncate(product.description, length: 50) %></p>
+            <h4 class="text-sm font-medium text-gray-900">$<%= sprintf('%.2f', product.price) %></h4>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
