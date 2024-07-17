@@ -26,6 +26,7 @@ gem "stimulus-rails"
 gem 'open-uri'
 gem 'devise'
 gem 'pundit'
+gem 'faker'
 
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"

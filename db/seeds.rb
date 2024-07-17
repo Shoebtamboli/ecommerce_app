@@ -1,58 +1,11 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
 require 'open-uri'
+require 'faker'
 
 # Clear existing data
 puts "Clearing existing data..."
 Product.destroy_all
 
-puts "Creating products..."
-
-products = [
-  {
-    name: "Laptop",
-    description: "High-performance laptop for work and gaming",
-    price: 999.99,
-    stock: 50,
-    thumbnail_url: "https://picsum.photos/seed/laptop/300/300",
-    image_urls: [
-      "https://picsum.photos/seed/laptop1/800/600",
-      "https://picsum.photos/seed/laptop2/800/600",
-      "https://picsum.photos/seed/laptop3/800/600"
-    ]
-  },
-  {
-    name: "Smartphone",
-    description: "Latest model with advanced features",
-    price: 699.99,
-    stock: 100,
-    thumbnail_url: "https://picsum.photos/seed/smartphone/300/300",
-    image_urls: [
-      "https://picsum.photos/seed/smartphone1/800/600",
-      "https://picsum.photos/seed/smartphone2/800/600",
-      "https://picsum.photos/seed/smartphone3/800/600"
-    ]
-  },
-  {
-    name: "Headphones",
-    description: "Noise-cancelling wireless headphones",
-    price: 199.99,
-    stock: 200,
-    thumbnail_url: "https://picsum.photos/seed/headphones/300/300",
-    image_urls: [
-      "https://picsum.photos/seed/headphones1/800/600",
-      "https://picsum.photos/seed/headphones2/800/600",
-      "https://picsum.photos/seed/headphones3/800/600"
-    ]
-  }
-]
+puts "Creating 50 products..."
 
 def attach_image(product, url, is_thumbnail = false)
   max_attempts = 3
@@ -73,32 +26,34 @@ def attach_image(product, url, is_thumbnail = false)
       retry
     else
       puts "Failed to download image after #{max_attempts} attempts: #{url}"
-      raise e
     end
   end
 end
 
-products.each do |product_data|
+50.times do |i|
   Product.transaction do
     product = Product.new(
-      name: product_data[:name],
-      description: product_data[:description],
-      price: product_data[:price],
-      stock: product_data[:stock]
+      name: Faker::Commerce.product_name,
+      description: Faker::Lorem.paragraph(sentence_count: 3, supplemental: true, random_sentences_to_add: 4),
+      price: Faker::Commerce.price(range: 10..1000.0),
+      stock: Faker::Number.between(from: 0, to: 100)
     )
 
     # Attach thumbnail
-    attach_image(product, product_data[:thumbnail_url], true)
+    thumbnail_url = "https://picsum.photos/seed/#{product.name.parameterize}/300/300"
+    attach_image(product, thumbnail_url, true)
 
-    # Attach additional images
-    product_data[:image_urls].each do |image_url|
+    # Attach additional images (1 to 3 images)
+    image_count = Faker::Number.between(from: 1, to: 3)
+    image_count.times do |j|
+      image_url = "https://picsum.photos/seed/#{product.name.parameterize}#{j}/800/600"
       attach_image(product, image_url)
     end
 
     if product.save
-      puts "Created #{product.name}"
+      puts "Created product #{i+1}: #{product.name}"
     else
-      puts "Failed to create #{product_data[:name]}: #{product.errors.full_messages.join(', ')}"
+      puts "Failed to create product #{i+1}: #{product.errors.full_messages.join(', ')}"
     end
   end
 end
