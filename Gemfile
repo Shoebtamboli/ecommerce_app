@@ -28,6 +28,7 @@ gem 'devise'
 gem 'pundit'
 gem 'faker'
 gem 'kaminari'
+gem 'groupdate'
 
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
