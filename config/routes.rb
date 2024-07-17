@@ -14,18 +14,13 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    get 'users/index'
-    get 'users/show'
-    get 'users/edit'
-    get 'users/update'
-    get 'users/destroy'
     get 'dashboard', to: 'dashboard#index'
     resources :products do
       member do
         delete 'remove_image/:image_id', to: 'products#remove_image', as: :remove_image
       end
     end
-    resources :orders, only: [:index, :edit, :update]
+    resources :orders, only: [:index, :show, :edit, :update]
     resources :users
   end
 end
