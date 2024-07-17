@@ -1,0 +1,49 @@
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-semibold mb-6">Checkout</h1>
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @cart.cart_items.each do |item| %>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <%= image_tag item.product.thumbnail, class: "h-10 w-10 rounded-full" if item.product.thumbnail.attached? %>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    <%= item.product.name %>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">$<%= sprintf('%.2f', item.product.price) %></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900"><%= item.quantity %></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              $<%= sprintf('%.2f', item.product.price * item.quantity) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="mb-6">
+    <h2 class="text-xl font-semibold">Total: $<%= sprintf('%.2f', @cart.total_price) %></h2>
+  </div>
+  <%= form_with(model: @order, local: true, class: "mb-6") do |f| %>
+    <%= f.submit "Place Order", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+  <% end %>
+  <%= link_to "Back to Cart", cart_path, class: "text-blue-500 hover:text-blue-700" %>
+</div>

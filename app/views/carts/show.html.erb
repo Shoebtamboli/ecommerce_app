@@ -54,5 +54,5 @@
     <h2 class="text-xl font-semibold">Total: $<%= sprintf('%.2f', @cart.total_price) %></h2>
   </div>
   <%= link_to "Continue Shopping", products_path, class: "mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
-  <%= link_to "Proceed to Checkout", "#", class: "mt-4 ml-4 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" %>
+  <%= link_to "Proceed to Checkout", new_order_path, class: "mt-4 ml-4 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" %>
 <% end %>

@@ -6,7 +6,7 @@ class User < ApplicationRecord
   after_initialize :set_default_role, if: :new_record?
 
   has_one :cart, dependent: :destroy
-
+  has_many :orders, dependent: :destroy
   after_create :create_cart
 
   private
