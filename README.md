@@ -13,10 +13,12 @@
 9. [Shopping Cart](#shopping-cart)
 10. [Checkout Process](#checkout-process)
 11. [Homepage](#homepage)
-12. [Testing](#testing)
-13. [Deployment](#deployment)
-14. [Contributing](#contributing)
-15. [License](#license)
+12. [Authentication](#authentication)
+13. [Contact Form](#contact-form)
+14. [Testing](#testing)
+15. [Deployment](#deployment)
+16. [Contributing](#contributing)
+17. [License](#license)
 
 ## Introduction
 
@@ -34,6 +36,9 @@ and view basic analytics. The application features a responsive design using Tai
 - Order management for admins
 - User management for admins
 - Responsive design using Tailwind CSS
+- Contact form for customer inquiries
+- "About Us" and "Contact Us" pages
+- Email notifications for orders and status updates
 
 ## Technologies Used
 
@@ -46,15 +51,18 @@ and view basic analytics. The application features a responsive design using Tai
 - Active Storage (for image uploads)
 - Stimulus (for JavaScript interactions)
 - Chart.js (for admin dashboard analytics)
+- Sidekiq (for background job processing)
+- MailCatcher (for email testing in development)
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
 - Ruby 3.x
-- Rails 6.x
+- Rails 7.x
 - PostgreSQL
-- Node.js and Yarn (for webpacker)
+- Node.js and Yarn
+- Redis (for Sidekiq)
 
 ## Setup
 
@@ -92,18 +100,6 @@ Before you begin, ensure you have the following installed:
 
 2. Visit `http://localhost:3000` in your web browser.
 
-## Admin Interface
-
-To access the admin interface:
-
-1. Log in with an admin account (you can create one using the Rails console).
-2. Visit `http://localhost:3000/admin/dashboard`.
-
-The admin interface allows you to:
-
-- View basic analytics (total products, out-of-stock products)
-- Manage products (create, read, update, delete)
-
 ## User Roles
 
 The application has two user roles:
@@ -124,6 +120,7 @@ The admin interface allows you to:
 - Manage products (create, read, update, delete)
 - Manage orders (view, update status)
 - Manage users (view, update, delete)
+- View a chart of weekly orders
 
 ## Shopping Cart
 
@@ -135,8 +132,8 @@ The admin interface allows you to:
 
 1. Users review their cart contents
 2. Users proceed to checkout
-3. Users enter shipping and payment information
-4. Order is created and cart is cleared upon successful payment
+3. Order is created and cart is cleared upon successful submission
+4. Email notification is sent to the user
 
 ## Homepage
 
@@ -145,6 +142,18 @@ The homepage features:
 - A hero section with a call-to-action
 - Featured product categories
 - A selection of featured products
+
+## Authentication
+
+- Custom styled login and registration pages
+- "Forgot Password" functionality
+- Remember Me option for login
+
+## Contact Form
+
+- Users can submit inquiries through a contact form
+- Form submissions are stored in the database
+- Admin receives an email notification for new submissions
 
 ## Testing
 
