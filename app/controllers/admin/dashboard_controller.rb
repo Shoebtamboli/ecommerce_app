@@ -6,6 +6,8 @@ class Admin::DashboardController < ApplicationController
   def index
     @total_products = Product.count
     @out_of_stock_products = Product.where(stock: 0).count
+    @total_orders = Order.count
+    @total_earnings = Order.sum(:total)
   end
 
   private

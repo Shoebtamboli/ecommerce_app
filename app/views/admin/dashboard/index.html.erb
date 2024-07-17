@@ -1,23 +1,73 @@
-<h1 class="text-2xl font-semibold mb-6">Dashboard</h1>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <div class="bg-white overflow-hidden shadow rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <dt class="text-sm font-medium text-gray-500 truncate">
-        Total Products
-      </dt>
-      <dd class="mt-1 text-3xl font-semibold text-gray-900">
-        <%= @total_products %>
-      </dd>
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-semibold mb-6">Dashboard</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">
+          Total Products
+        </dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+          <%= @total_products %>
+        </dd>
+      </div>
+    </div>
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">
+          Out of Stock Products
+        </dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+          <%= @out_of_stock_products %>
+        </dd>
+      </div>
+    </div>
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">
+          Total Orders
+        </dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+          <%= @total_orders %>
+        </dd>
+      </div>
+    </div>
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">
+          Total Earnings
+        </dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+          $<%= sprintf('%.2f', @total_earnings) %>
+        </dd>
+      </div>
     </div>
   </div>
-  <div class="bg-white overflow-hidden shadow rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <dt class="text-sm font-medium text-gray-500 truncate">
-        Out of Stock Products
-      </dt>
-      <dd class="mt-1 text-3xl font-semibold text-gray-900">
-        <%= @out_of_stock_products %>
-      </dd>
+  <!-- You can add more sections here, such as recent orders or top-selling products -->
+  <div class="mt-8">
+    <h2 class="text-lg font-semibold mb-4">Recent Orders</h2>
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% Order.order(created_at: :desc).limit(5).each do |order| %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= order.id %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= order.user.email %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$<%= sprintf('%.2f', order.total) %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= order.status.capitalize %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= order.created_at.strftime("%B %d, %Y") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
