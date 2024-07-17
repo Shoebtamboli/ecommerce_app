@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get 'dashboard', to: 'dashboard#index'
-    resources :products
+    resources :products do
+      member do
+        delete 'remove_image/:image_id', to: 'products#remove_image', as: :remove_image
+      end
+    end
   end
 end

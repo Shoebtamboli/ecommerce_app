@@ -1,7 +1,7 @@
 class Admin::ProductsController < ApplicationController
   before_action :authenticate_user!
   before_action :check_admin
-  before_action :set_product, only: [:edit, :update, :destroy]
+  before_action :set_product, only: [:edit, :update, :destroy, :remove_image]
   layout 'admin'
 
   def index
@@ -33,8 +33,20 @@ class Admin::ProductsController < ApplicationController
   end
 
   def destroy
-    @product.destroy
-    redirect_to admin_products_path, notice: 'Product was successfully deleted.'
+    begin
+      ActiveRecord::Base.transaction do
+        @product.destroy!
+      end
+      redirect_to admin_products_path, notice: 'Product was successfully deleted.'
+    rescue ActiveRecord::RecordNotDestroyed => e
+      redirect_to admin_products_path, alert: "Failed to delete product: #{e.message}"
+    end
+  end
+
+  def remove_image
+    image = @product.images.find(params[:image_id])
+    image.purge
+    redirect_to edit_admin_product_path(@product), notice: 'Image was successfully removed.'
   end
 
   private
@@ -48,6 +60,6 @@ class Admin::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price, :stock, :thumbnail)
+    params.require(:product).permit(:name, :description, :price, :stock, :thumbnail, images: [])
   end
 end
