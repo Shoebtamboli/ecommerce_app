@@ -1,4 +1,3 @@
-<!-- app/views/admin/products/_form.html.erb -->
 <%= form_with(model: [:admin, product], local: true, class: "max-w-lg") do |form| %>
   <% if product.errors.any? %>
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -28,7 +27,7 @@
   </div>
   <div class="mb-4">
     <%= form.label :thumbnail, class: "block text-gray-700 text-sm font-bold mb-2" %>
-    <%= form.file_field :thumbnail, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*', data: { action: "change->product#previewThumbnail" } %>
+    <%= form.file_field :thumbnail, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*', id: "thumbnail-upload" %>
     <div id="thumbnail-preview" class="mt-2">
       <% if product.thumbnail.attached? %>
         <%= image_tag product.thumbnail, class: "w-32 h-32 object-cover" %>
@@ -37,12 +36,15 @@
   </div>
   <div class="mb-4">
     <%= form.label :images, class: "block text-gray-700 text-sm font-bold mb-2" %>
-    <%= form.file_field :images, multiple: true, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*', data: { action: "change->product#previewImages" } %>
+    <%= form.file_field :images, multiple: true, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*', id: "images-upload" %>
     <div id="images-preview" class="mt-2 grid grid-cols-3 gap-2">
       <% product.images.each do |image| %>
-        <div class="relative">
+        <div class="relative" id="image-<%= image.id %>">
           <%= image_tag image, class: "w-32 h-32 object-cover" %>
-          <%= button_to 'Remove', remove_image_admin_product_path(product, image_id: image.id), method: :delete, class: "absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs", form: { data: { turbo_confirm: "Are you sure you want to remove this image?" } } %>
+          <button type="button" class="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs" onclick="markImageForRemoval(<%= image.id %>)">
+            Remove
+          </button>
+          <%= form.check_box :images_to_remove, { multiple: true, class: 'hidden', id: "remove-image-#{image.id}" }, image.id, false %>
         </div>
       <% end %>
     </div>
@@ -53,29 +55,37 @@
   </div>
 <% end %>
 <script>
-  class ProductController {
-    static previewThumbnail(event) {
-      const input = event.target;
-      const preview = document.getElementById('thumbnail-preview');
-      preview.innerHTML = '';
-      if (input.files && input.files[0]) {
+  function markImageForRemoval(imageId) {
+    const checkbox = document.getElementById(`remove-image-${imageId}`);
+    checkbox.checked = !checkbox.checked;
+    const imageDiv = document.getElementById(`image-${imageId}`);
+    imageDiv.style.opacity = checkbox.checked ? '0.5' : '1';
+  }
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const thumbnailInput = document.getElementById('thumbnail-upload');
+    const thumbnailPreview = document.getElementById('thumbnail-preview');
+    const imagesInput = document.getElementById('images-upload');
+    const imagesPreview = document.getElementById('images-preview');
+
+    thumbnailInput.addEventListener('change', (e) => {
+      thumbnailPreview.innerHTML = '';
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = function(e) {
           const img = document.createElement('img');
           img.src = e.target.result;
           img.className = 'w-32 h-32 object-cover';
-          preview.appendChild(img);
+          thumbnailPreview.appendChild(img);
         }
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(file);
       }
-    }
+    });
 
-    static previewImages(event) {
-      const input = event.target;
-      const preview = document.getElementById('images-preview');
-      preview.innerHTML = '';
-      if (input.files) {
-        Array.from(input.files).forEach(file => {
+    imagesInput.addEventListener('change', (e) => {
+      Array.from(e.target.files).forEach(file => {
+        if (file.type.startsWith('image/')) {
           const reader = new FileReader();
           reader.onload = function(e) {
             const div = document.createElement('div');
@@ -84,16 +94,11 @@
             img.src = e.target.result;
             img.className = 'w-32 h-32 object-cover';
             div.appendChild(img);
-            preview.appendChild(div);
+            imagesPreview.appendChild(div);
           }
           reader.readAsDataURL(file);
-        });
-      }
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', (event) => {
-    document.querySelector('input[type="file"][data-action="change->product#previewThumbnail"]').addEventListener('change', ProductController.previewThumbnail);
-    document.querySelector('input[type="file"][data-action="change->product#previewImages"]').addEventListener('change', ProductController.previewImages);
+        }
+      });
+    });
   });
 </script>
