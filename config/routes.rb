@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   get 'about', to: 'pages#about'
   get 'contact', to: 'pages#contact'
   post 'contact', to: 'pages#submit_contact'
-
+  get 'privacy-policy', to: 'pages#privacy_policy', as: :privacy_policy
+  get 'terms-of-service', to: 'pages#terms_of_service', as: :terms_of_service
+  
   devise_for :users
   resources :products, only: [:index, :show]
   resources :orders, only: [:index, :new, :create, :show]

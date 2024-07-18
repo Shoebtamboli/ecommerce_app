@@ -11,6 +11,12 @@ class PagesController < ApplicationController
     @contact_submission = ContactSubmission.new
   end
 
+  def privacy_policy
+  end
+
+  def terms_of_service
+  end
+
   def submit_contact
     @contact_submission = ContactSubmission.new(contact_params)
 
