@@ -3,7 +3,33 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @products = Product.order(created_at: :desc).page(params[:page]).per(12)
+    @products = Product.all
+
+    # Search by name
+    if params[:search].present?
+      @products = @products.where("name ILIKE ?", "%#{params[:search]}%")
+    end
+
+    # Filter by price
+    if params[:min_price].present?
+      @products = @products.where("price >= ?", params[:min_price])
+    end
+
+    if params[:max_price].present?
+      @products = @products.where("price <= ?", params[:max_price])
+    end
+
+    # Sort by price
+    case params[:sort_by]
+    when 'price_asc'
+      @products = @products.order(price: :asc)
+    when 'price_desc'
+      @products = @products.order(price: :desc)
+    else
+      @products = @products.order(created_at: :desc)
+    end
+
+    @products = @products.order(created_at: :desc).page(params[:page]).per(12)
   end
 
   def show

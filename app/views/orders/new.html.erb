@@ -1,4 +1,5 @@
 <div class="container mx-auto px-4">
+  <%= link_to "Back to Cart", cart_path, class: "inline-block mb-8 align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" %>
   <h1 class="text-2xl font-semibold mb-6">Checkout</h1>
   <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
     <table class="min-w-full divide-y divide-gray-200">
@@ -45,5 +46,4 @@
   <%= form_with(model: @order, local: true, class: "mb-6") do |f| %>
     <%= f.submit "Place Order", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
   <% end %>
-  <%= link_to "Back to Cart", cart_path, class: "text-blue-500 hover:text-blue-700" %>
 </div>
