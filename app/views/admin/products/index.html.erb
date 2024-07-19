@@ -5,6 +5,7 @@
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
+          <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Image</th>
           <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Name</th>
           <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Price</th>
           <th scope="col" class="px-4 py-2 text-left text-sm uppercase tracking-wider border-b">Stock</th>
@@ -14,6 +15,13 @@
       <tbody>
         <% @products.each do |product| %>
           <tr>
+            <td class="py-2 px-4 border-b">
+              <% if product.thumbnail.attached? %>
+                <%= image_tag product.thumbnail, class: "w-16 h-16 object-cover" %>
+              <% else %>
+                <span>No Image</span>
+              <% end %>
+            </td>
             <td class="py-2 px-4 border-b"><%= product.name %></td>
             <td class="py-2 px-4 border-b">$<%= sprintf('%.2f', product.price) %></td>
             <td class="py-2 px-4 border-b"><%= product.stock %></td>
