@@ -19,7 +19,7 @@ class Product < ApplicationRecord
   def acceptable_thumbnail
     return unless thumbnail.attached?
 
-    unless thumbnail.blob.byte_size <= 1.megabyte
+    if thumbnail.blob.byte_size > 1.megabyte
       errors.add(:thumbnail, "is too big")
     end
 
