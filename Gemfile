@@ -60,6 +60,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+  gem 'capybara'
 end
 
 group :development do
@@ -78,4 +79,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem 'shoulda-matchers'
+  gem 'simplecov', require: false
 end
